@@ -49,7 +49,6 @@
 
 #include "MinesweeperCore_Utils.h"
 #include "Block.h"
-#include "Coord.h"
 #include "GameCore.h"
 
 #endif // defined(__MinesweeperCore_include_MinesweeperCore_h__) //

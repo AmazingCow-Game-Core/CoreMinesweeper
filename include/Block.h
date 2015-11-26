@@ -46,18 +46,17 @@
 #include <vector>
 //MinesweeperCore.
 #include "MinesweeperCore_Utils.h"
+//CoreCoord.
 #include "Coord.h"
 
 NS_MINESWEEPERCORE_BEGIN
-
-class GameCore;
 
 class Block
 {
     // Friends //
 public:
     friend class GameCore;
-    
+
     // Constants/Enums/Typedefs //
 public:
     ///@brief
@@ -80,43 +79,43 @@ public:
 
     ///@brief
     ///@returns
-    const Coord& getCoord() const;
+    const CoreCoord::Coord& getCoord() const;
 
-    
+
     ///@brief
     ///@returns
     bool isMine() const;
-    
+
     ///@brief
     ///@returns
     bool isFlagged() const;
-    
+
     ///@brief
     ///@returns
     bool isUncovered() const;
 
-    
+
     ///@brief
     ///@returns
     bool toggleFlag();
-    
+
     ///@brief
     ///@returns
     void uncover();
-    
+
     // Private Methods //
 private:
     //This methods are meant to accessed by GameCore class.
     void setNumber(int number);
     void incrementNumber();
-    void setCoord(const Coord &coord);
-    
+    void setCoord(const CoreCoord::Coord &coord);
+
     // iVars //
 private:
-    int   m_number;
-    bool  m_isFlagged;
-    bool  m_isUncovered;
-    Coord m_coord;
+    int              m_number;
+    bool             m_isFlagged;
+    bool             m_isUncovered;
+    CoreCoord::Coord m_coord;
 };
 
 NS_MINESWEEPERCORE_END

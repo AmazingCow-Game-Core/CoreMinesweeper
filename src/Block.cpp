@@ -67,7 +67,7 @@ int Block::getNumber() const
 {
     return m_number;
 }
-const Coord& Block::getCoord() const
+const CoreCoord::Coord& Block::getCoord() const
 {
     return m_coord;
 }
@@ -103,10 +103,10 @@ void Block::incrementNumber()
 {
     if(m_number == kMineNumber)
         return;
-    
+
     ++m_number;
 }
-void Block::setCoord(const Coord &coord)
+void Block::setCoord(const CoreCoord::Coord &coord)
 {
     m_coord = coord;
 }

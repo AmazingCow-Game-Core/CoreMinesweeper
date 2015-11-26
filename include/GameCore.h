@@ -48,6 +48,7 @@
 //MinesweeperCore.
 #include "MinesweeperCore_Utils.h"
 #include "Block.h"
+//CoreCoord.
 #include "Coord.h"
 
 NS_MINESWEEPERCORE_BEGIN
@@ -83,46 +84,46 @@ public:
     //Flag.
     ///@brief
     ///@returns
-    const Block& toggleFlagAt(const Coord &coord);
+    const Block& toggleFlagAt(const CoreCoord::Coord &coord);
 
     ///@brief
     ///@returns
-    const Coord::CoordVec& getFlagCoords() const;
-    
+    const CoreCoord::Coord::Vec& getFlagCoords() const;
+
     ///@brief
     ///@returns
     int getFlagsCount() const;
 
-    
+
     //Blocks.
     ///@brief
     ///@returns
-    Coord::CoordVec openBlockAt(const Coord &coord);
+    CoreCoord::Coord::Vec openBlockAt(const CoreCoord::Coord &coord);
 
     ///@brief
     ///@returns
-    const Block& getBlockAt(const Coord &coord) const;
-    
+    const Block& getBlockAt(const CoreCoord::Coord &coord) const;
+
     ///@brief
     ///@returns
-    const Coord::CoordVec& getUncoveredBlockCoords() const;
-    
+    const CoreCoord::Coord::Vec& getUncoveredBlockCoords() const;
+
     ///@brief
     ///@returns
     int getUncoveredBlocksCount() const;
 
-    
+
     //Board.
     ///@brief
     ///@returns
     const Block::Board& getBoard() const;
 
-    
+
     //Game stuff.
     ///@brief
     ///@returns
     Status getStatus() const;
-    
+
     ///@brief
     ///@returns
     int getMinesCount() const;
@@ -131,21 +132,21 @@ public:
     ///@returns
     int getSeed() const;
 
-    
+
     //Ascii.
     ///@brief
     ///@returns
     std::string ascii() const;
-    
+
     ///@brief
     ///@returns
     std::string asciiOpen() const;
 
-    
+
     //Helpers.
     ///@brief
     ///@returns
-    bool isValidCoord(const Coord &coord) const;
+    bool isValidCoord(const CoreCoord::Coord &coord) const;
 
     // Private Methods //
 private:
@@ -154,14 +155,14 @@ private:
     void initBoard();
 
     //Helpers.
-    Block& getBlockAt(const Coord &coord);
-    Coord::CoordVec openBlockHelper(const Coord &coord);
+    Block& getBlockAt(const CoreCoord::Coord &coord);
+    CoreCoord::Coord::Vec openBlockHelper(const CoreCoord::Coord &coord);
 
     // iVars //
 private:
-    Block::Board    m_board;
-    Coord::CoordVec m_uncoveredBlockCoords;
-    Coord::CoordVec m_flagCoords;
+    Block::Board          m_board;
+    CoreCoord::Coord::Vec m_uncoveredBlockCoords;
+    CoreCoord::Coord::Vec m_flagCoords;
 
     Status m_status;
     int    m_minesCount;

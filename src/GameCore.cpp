@@ -45,9 +45,8 @@
 #include <ctime>
 #include <cstdlib>
 #include <sstream>
-
-#include <iostream>
-using namespace std;
+#include <algorithm>
+#include <iterator>
 
 //Usings
 USING_NS_MINESWEEPERCORE;
@@ -73,23 +72,25 @@ GameCore::GameCore(int boardWidth, int boardHeight,
 
 // Public Methods //
 //Flag.
-const Block& GameCore::toggleFlagAt(const Coord &coord)
+const Block& GameCore::toggleFlagAt(const CoreCoord::Coord &coord)
 {
     auto &block  = getBlockAt(coord);
     auto flagged = block.toggleFlag();
-    
+
     //If block is now flagged add it to flagged coords.
     //If block is NOT flagged remove it from flagged coords.
-    auto it = std::find(begin(m_flagCoords), end(m_flagCoords), coord);
+    auto it = std::find(std::begin(m_flagCoords),
+                        std::end  (m_flagCoords),
+                        coord);
 
     if(flagged && it != end(m_flagCoords))
         m_flagCoords.erase(it);
     else if(!flagged && it == end(m_flagCoords))
         m_flagCoords.push_back(coord);
-    
+
     return block;
 }
-const Coord::CoordVec& GameCore::getFlagCoords() const
+const CoreCoord::Coord::Vec& GameCore::getFlagCoords() const
 {
     return m_flagCoords;
 }
@@ -99,9 +100,9 @@ int GameCore::getFlagsCount() const
 }
 
 //Blocks.
-Coord::CoordVec GameCore::openBlockAt(const Coord &coord)
+CoreCoord::Coord::Vec GameCore::openBlockAt(const CoreCoord::Coord &coord)
 {
-    auto openedCoords = Coord::CoordVec();
+    auto openedCoords = CoreCoord::Coord::Vec();
 
     //Coord is not on the board bounds or
     //the game is already over - we don't have to anything more...
@@ -110,17 +111,17 @@ Coord::CoordVec GameCore::openBlockAt(const Coord &coord)
 
     //Open all possible blocks.
     openedCoords = openBlockHelper(coord);
- 
+
     //Update the uncovered coords.
     m_uncoveredBlockCoords.insert(end  (m_uncoveredBlockCoords),
                                   begin(openedCoords),
                                   end  (openedCoords));
-    
+
     //No blocks was opened.
     if(openedCoords.empty())
         return openedCoords;
-    
-    
+
+
     //Check status.
     const auto &block  = getBlockAt(openedCoords[0]);
     //Player hit a mine - Game is Over.
@@ -133,16 +134,16 @@ Coord::CoordVec GameCore::openBlockAt(const Coord &coord)
     {
         m_status = Status::Victory;
     }
-    
-    
+
+
     return openedCoords;
 }
 
-const Block& GameCore::getBlockAt(const Coord &coord) const
+const Block& GameCore::getBlockAt(const CoreCoord::Coord &coord) const
 {
     return m_board[coord.y][coord.x];
 }
-const Coord::CoordVec& GameCore::getUncoveredBlockCoords() const
+const CoreCoord::Coord::Vec& GameCore::getUncoveredBlockCoords() const
 {
     return m_uncoveredBlockCoords;
 }
@@ -226,7 +227,7 @@ std::string GameCore::asciiOpen() const
 }
 
 //Helper.
-bool GameCore::isValidCoord(const Coord &coord) const
+bool GameCore::isValidCoord(const CoreCoord::Coord &coord) const
 {
     return (coord.y >= 0 && coord.y < static_cast<int>(m_board.size()))
         && (coord.x >= 0 && coord.x < static_cast<int>(m_board[coord.y].size()));
@@ -258,7 +259,7 @@ void GameCore::initBoard()
         for(auto j = 0; j < m_boardWidth; ++j)
         {
             Block block;
-            block.setCoord(Coord(i, j));
+            block.setCoord(CoreCoord::Coord(i, j));
             m_board[i].push_back(block);
         }
     }
@@ -273,16 +274,16 @@ void GameCore::initBoard()
             int x = rand() % m_boardWidth;
 
             auto &block = m_board[y][x];
-            
+
             //Already is a mine, don't need do anything more.
             if(block.isMine())
                 continue;
 
             //Set as Mine.
             block.setNumber(Block::kMineNumber);
-            
+
             //Update all surrounding coords values.
-            for(auto coord : block.getCoord().getSurroundingCoords())
+            for(auto coord : block.getCoord().getSurrounding())
             {
                 if(!isValidCoord(coord))
                     continue;
@@ -290,7 +291,7 @@ void GameCore::initBoard()
                 auto &surroundBlock = getBlockAt(coord);
                 surroundBlock.incrementNumber();
             }
-            
+
             //Mine was placed.
             break;
         }
@@ -298,48 +299,48 @@ void GameCore::initBoard()
 }
 
 //Helpers.
-Block& GameCore::getBlockAt(const Coord &coord)
+Block& GameCore::getBlockAt(const CoreCoord::Coord &coord)
 {
     return m_board[coord.y][coord.x];
 }
-Coord::CoordVec GameCore::openBlockHelper(const Coord &coord)
+CoreCoord::Coord::Vec GameCore::openBlockHelper(const CoreCoord::Coord &coord)
 {
-    Coord::CoordVec openedCoords;
-    
+    CoreCoord::Coord::Vec openedCoords;
+
     //Coords is out of Board, we don't have nothing more to do.
     if(!isValidCoord(coord))
         return openedCoords;
-    
+
     auto &block = getBlockAt(coord);
-    
+
     //Block is already uncovered or is flagged.
     //So we don't have nothing more to do.
     if(block.isUncovered() || block.isFlagged())
         return openedCoords;
-    
+
     //Uncover the block and add it into the opened coords.
     block.uncover();
     openedCoords.push_back(coord);
-    
+
     //Uncovered a non zero block, so just open it and return.
     if(block.getNumber() == Block::kMineNumber ||
        block.getNumber() != 0)
     {
         return openedCoords;
     }
-    
+
     //Now recursively try open for all surrounding blocks.
-    for(auto surroundCoord : coord.getSurroundingCoords())
+    for(auto surroundCoord : coord.getSurrounding())
     {
         //Not a valid coord, don't bother call it...
         if(!isValidCoord(surroundCoord))
             continue;
-        
+
         auto surroundOpened = openBlockHelper(surroundCoord);
         openedCoords.insert(end  (openedCoords),
                             begin(surroundOpened),
                             end  (surroundOpened));
     }
-    
+
     return openedCoords;
 }
