@@ -3,7 +3,7 @@
 //               ████████                                                     //
 //             ██        ██                                                   //
 //            ███  █  █  ███                                                  //
-//            █ █        █ █        MinesweeperCore_Utils.h                   //
+//            █ █        █ █        main.cpp                                  //
 //             ████████████         Minesweeper Core                          //
 //           █              █       Copyright (c) 2015 AmazingCow             //
 //          █     █    █     █      www.AmazingCow.com                        //
@@ -39,22 +39,55 @@
 //                                  Enjoy :)                                  //
 //----------------------------------------------------------------------------//
 
-#ifndef __MinesweeperCore_include_MinesweeperCore_Utils_h__
-#define __MinesweeperCore_include_MinesweeperCore_Utils_h__
 
-//All classes of this core is placed inside this namespace.
-//We use MACROS so is easier to change if needed.
-//Is (in our opinion) more explicit.
-//And finally the editors will not reformat the code.
-#define NS_MINESWEEPERCORE_BEGIN namespace MinesweeperCore {
-#define NS_MINESWEEPERCORE_END   }
-#define USING_NS_MINESWEEPERCORE using namespace MinesweeperCore
+//This guard is to ease the usage of the MinesweeperCore,
+//so it's users won't need to worry about removing any files
+//since is very unlikely that this flag is defined elsewhere.
+#ifdef __AMAZINGCORE_MINESWEEPERCORE_TEST_ENABLED__
 
-//The core version number.
-#define COW_MINESWEEPERCORE_VERSION_MAJOR    "0"
-#define COW_MINESWEEPERCORE_VERSION_MINOR    "2"
-#define COW_MINESWEEPERCORE_VERSION_REVISION "0"
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include "../include/MinesweeperCore.h"
 
-#define COW_MINESSWEEPERCORE_VERSION "0.2.0"
+USING_NS_MINESWEEPERCORE;
+using namespace std;
 
-#endif // defined(__MinesweeperCore_include_MinesweeperCore_Utils_h__) //
+void usage()
+{
+    cout << "Amazing Cow - MinesweeperCore Test Game" << endl;
+    cout << "Usage:" << endl;
+    cout << "  <binary-name> width height mines showMines" << endl;
+    cout << "Ex: ./testgame 4 8 10 1 //1 Show mines" << endl;
+    cout << "Ex: ./testgame 4 8 10 0 //0 DONT Show mines" << endl;
+
+    exit(1);
+}
+
+int main(int argc, const char *argv[])
+{
+    if(argc != 5)
+        usage();
+
+    auto width     = atoi(argv[1]);
+    auto height    = atoi(argv[2]);
+    auto mines     = atoi(argv[3]);
+    auto showMines = atoi(argv[4]);
+
+    GameCore core(width, height, mines);
+
+    while(core.getStatus() == GameCore::Status::Continue)
+    {
+        cout << "Board" << endl;
+        if(showMines)
+            cout << core.asciiOpen() << endl;
+        else
+            cout << core.ascii() << endl;
+
+        CoreCoord::Coord coord;
+        cin >> coord.x >> coord.y;
+
+    }
+}
+
+#endif // __AMAZINGCORE_MINESWEEPERCORE_TEST_ENABLED__ //
