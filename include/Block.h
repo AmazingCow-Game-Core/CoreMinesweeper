@@ -4,7 +4,7 @@
 //             ██        ██                                                   //
 //            ███  █  █  ███                                                  //
 //            █ █        █ █        Block.h                                   //
-//             ████████████         Minesweeper Core                          //
+//             ████████████         CoreMinesweeper                           //
 //           █              █       Copyright (c) 2015 AmazingCow             //
 //          █     █    █     █      www.AmazingCow.com                        //
 //          █     █    █     █                                                //
@@ -39,17 +39,17 @@
 //                                  Enjoy :)                                  //
 //----------------------------------------------------------------------------//
 
-#ifndef __MinesweeperCore_include_Block_h__
-#define __MinesweeperCore_include_Block_h__
+#ifndef __CoreMinesweeper_include_Block_h__
+#define __CoreMinesweeper_include_Block_h__
 
 //std
 #include <vector>
-//MinesweeperCore.
-#include "MinesweeperCore_Utils.h"
+//CoreMinesweeper.
+#include "CoreMinesweeper_Utils.h"
 //CoreCoord.
 #include "Coord.h"
 
-NS_MINESWEEPERCORE_BEGIN
+NS_COREMINESWEEPER_BEGIN
 
 class Block
 {
@@ -118,5 +118,5 @@ private:
     CoreCoord::Coord m_coord;
 };
 
-NS_MINESWEEPERCORE_END
-#endif // defined(__MinesweeperCore_include_Block_h__) //
+NS_COREMINESWEEPER_END
+#endif // defined(__CoreMinesweeper_include_Block_h__) //

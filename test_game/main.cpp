@@ -4,7 +4,7 @@
 //             ██        ██                                                   //
 //            ███  █  █  ███                                                  //
 //            █ █        █ █        main.cpp                                  //
-//             ████████████         Minesweeper Core                          //
+//             ████████████         CoreMinesweeper                           //
 //           █              █       Copyright (c) 2015 AmazingCow             //
 //          █     █    █     █      www.AmazingCow.com                        //
 //          █     █    █     █                                                //
@@ -40,22 +40,22 @@
 //----------------------------------------------------------------------------//
 
 
-//This guard is to ease the usage of the MinesweeperCore,
+//This guard is to ease the usage of the CoreMinesweeper,
 //so it's users won't need to worry about removing any files
 //since is very unlikely that this flag is defined elsewhere.
-#ifdef __AMAZINGCORE_MINESWEEPERCORE_TEST_ENABLED__
+#ifdef __AMAZINGCORE_COREMINESWEEPER_TEST_ENABLED__
 
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-#include "../include/MinesweeperCore.h"
+#include "../include/CoreMinesweeper.h"
 
-USING_NS_MINESWEEPERCORE;
+USING_NS_COREMINESWEEPER;
 using namespace std;
 
 void usage()
 {
-    cout << "Amazing Cow - MinesweeperCore Test Game" << endl;
+    cout << "Amazing Cow - CoreMinesweeper Test Game" << endl;
     cout << "Usage:" << endl;
     cout << "  <binary-name> width height mines showMines" << endl;
     cout << "Ex: ./testgame 4 8 10 1 //1 Show mines" << endl;
@@ -85,9 +85,11 @@ int main(int argc, const char *argv[])
             cout << core.ascii() << endl;
 
         CoreCoord::Coord coord;
-        cin >> coord.x >> coord.y;
+        cin >> coord.y >> coord.x;
 
+        // COWTODO: Implement the game.
+        core.openBlockAt(coord);
     }
 }
 
-#endif // __AMAZINGCORE_MINESWEEPERCORE_TEST_ENABLED__ //
+#endif // __AMAZINGCORE_COREMINESWEEPER_TEST_ENABLED__ //

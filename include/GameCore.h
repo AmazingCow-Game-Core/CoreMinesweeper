@@ -4,7 +4,7 @@
 //             ██        ██                                                   //
 //            ███  █  █  ███                                                  //
 //            █ █        █ █        GameCore.h                                //
-//             ████████████         Minesweeper Core                          //
+//             ████████████         CoreMinesweeper                           //
 //           █              █       Copyright (c) 2015 AmazingCow             //
 //          █     █    █     █      www.AmazingCow.com                        //
 //          █     █    █     █                                                //
@@ -39,19 +39,19 @@
 //                                  Enjoy :)                                  //
 //----------------------------------------------------------------------------//
 
-#ifndef __MinesweeperCore_include_GameCore_h__
-#define __MinesweeperCore_include_GameCore_h__
+#ifndef __CoreMinesweeper_include_GameCore_h__
+#define __CoreMinesweeper_include_GameCore_h__
 
 //std
 #include <vector>
 #include <random>
-//MinesweeperCore.
-#include "MinesweeperCore_Utils.h"
+//CoreMinesweeper.
+#include "CoreMinesweeper_Utils.h"
 #include "Block.h"
 //CoreCoord.
 #include "Coord.h"
 
-NS_MINESWEEPERCORE_BEGIN
+NS_COREMINESWEEPER_BEGIN
 
 class GameCore
 {
@@ -171,5 +171,5 @@ private:
     int    m_seed;
 };
 
-NS_MINESWEEPERCORE_END
-#endif // defined(__MinesweeperCore_include_GameCore_h__) //
+NS_COREMINESWEEPER_END
+#endif // defined(__CoreMinesweeper_include_GameCore_h__) //

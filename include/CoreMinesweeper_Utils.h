@@ -3,8 +3,8 @@
 //               ████████                                                     //
 //             ██        ██                                                   //
 //            ███  █  █  ███                                                  //
-//            █ █        █ █        MinesweeperCore.h                         //
-//             ████████████         Minesweeper Core                          //
+//            █ █        █ █        CoreMinesweeper_Utils.h                   //
+//             ████████████         CoreMinesweeper                           //
 //           █              █       Copyright (c) 2015 AmazingCow             //
 //          █     █    █     █      www.AmazingCow.com                        //
 //          █     █    █     █                                                //
@@ -39,16 +39,22 @@
 //                                  Enjoy :)                                  //
 //----------------------------------------------------------------------------//
 
-#ifndef __MinesweeperCore_include_MinesweeperCore_h__
-#define __MinesweeperCore_include_MinesweeperCore_h__
+#ifndef __CoreMinesweeper_include_CoreMinesweeper_Utils_h__
+#define __CoreMinesweeper_include_CoreMinesweeper_Utils_h__
 
-//This is a umbrella header indented to ease the inclusion of all files
-//needed to use the Minesweeper Game Core.
-//While is possible to include each one separately is very easy just to include
-//this file alone and let it makes all the job. :)
+//All classes of this core is placed inside this namespace.
+//We use MACROS so is easier to change if needed.
+//Is (in our opinion) more explicit.
+//And finally the editors will not reformat the code.
+#define NS_COREMINESWEEPER_BEGIN namespace CoreMinesweeper {
+#define NS_COREMINESWEEPER_END   }
+#define USING_NS_COREMINESWEEPER using namespace CoreMinesweeper
 
-#include "MinesweeperCore_Utils.h"
-#include "Block.h"
-#include "GameCore.h"
+//The core version number.
+#define COW_COREMINESWEEPER_VERSION_MAJOR    "0"
+#define COW_COREMINESWEEPER_VERSION_MINOR    "3"
+#define COW_COREMINESWEEPER_VERSION_REVISION "0"
 
-#endif // defined(__MinesweeperCore_include_MinesweeperCore_h__) //
+#define COW_MINESSWEEPERCORE_VERSION "0.3.0"
+
+#endif // defined(__CoreMinesweeper_include_CoreMinesweeper_Utils_h__) //

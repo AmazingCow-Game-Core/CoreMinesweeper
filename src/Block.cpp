@@ -4,7 +4,7 @@
 //             ██        ██                                                   //
 //            ███  █  █  ███                                                  //
 //            █ █        █ █        Block.cpp                                 //
-//             ████████████         Minesweeper Core                          //
+//             ████████████         CoreMinesweeper                           //
 //           █              █       Copyright (c) 2015 AmazingCow             //
 //          █     █    █     █      www.AmazingCow.com                        //
 //          █     █    █     █                                                //
@@ -43,7 +43,7 @@
 #include "../include/Block.h"
 
 //Usings.
-USING_NS_MINESWEEPERCORE;
+USING_NS_COREMINESWEEPER;
 
 // Constants/Enums/Typedefs //
 const int Block::kMineNumber = -1;

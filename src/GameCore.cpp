@@ -4,7 +4,7 @@
 //             ██        ██                                                   //
 //            ███  █  █  ███                                                  //
 //            █ █        █ █        GameCore.cpp                              //
-//             ████████████         Minesweeper Core                          //
+//             ████████████         CoreMinesweeper                           //
 //           █              █       Copyright (c) 2015 AmazingCow             //
 //          █     █    █     █      www.AmazingCow.com                        //
 //          █     █    █     █                                                //
@@ -49,7 +49,7 @@
 #include <iterator>
 
 //Usings
-USING_NS_MINESWEEPERCORE;
+USING_NS_COREMINESWEEPER;
 
 // Enums/Constants/Typedefs //
 const int GameCore::kRandomSeed = -1;
@@ -175,6 +175,7 @@ int GameCore::getSeed() const
 //Ascii.
 std::string GameCore::ascii() const
 {
+    //COWTODO: Fix.
     std::stringstream ss;
 
     for(const auto &line : m_board)
@@ -201,6 +202,7 @@ std::string GameCore::ascii() const
 }
 std::string GameCore::asciiOpen() const
 {
+    //COWTODO: Fix.
     std::stringstream ss;
 
     for(const auto &line : m_board)

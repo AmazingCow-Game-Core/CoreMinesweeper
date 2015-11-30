@@ -3,8 +3,8 @@
 //               ████████                                                     //
 //             ██        ██                                                   //
 //            ███  █  █  ███                                                  //
-//            █ █        █ █        MinesweeperCore_Utils.h                   //
-//             ████████████         Minesweeper Core                          //
+//            █ █        █ █        CoreMinesweeper.h                         //
+//             ████████████         CoreMinesweeper                           //
 //           █              █       Copyright (c) 2015 AmazingCow             //
 //          █     █    █     █      www.AmazingCow.com                        //
 //          █     █    █     █                                                //
@@ -39,22 +39,16 @@
 //                                  Enjoy :)                                  //
 //----------------------------------------------------------------------------//
 
-#ifndef __MinesweeperCore_include_MinesweeperCore_Utils_h__
-#define __MinesweeperCore_include_MinesweeperCore_Utils_h__
+#ifndef __CoreMinesweeper_include_CoreMinesweeper_h__
+#define __CoreMinesweeper_include_CoreMinesweeper_h__
 
-//All classes of this core is placed inside this namespace.
-//We use MACROS so is easier to change if needed.
-//Is (in our opinion) more explicit.
-//And finally the editors will not reformat the code.
-#define NS_MINESWEEPERCORE_BEGIN namespace MinesweeperCore {
-#define NS_MINESWEEPERCORE_END   }
-#define USING_NS_MINESWEEPERCORE using namespace MinesweeperCore
+//This is a umbrella header indented to ease the inclusion of all files
+//needed to use the Minesweeper Game Core.
+//While is possible to include each one separately is very easy just to include
+//this file alone and let it makes all the job. :)
 
-//The core version number.
-#define COW_MINESWEEPERCORE_VERSION_MAJOR    "0"
-#define COW_MINESWEEPERCORE_VERSION_MINOR    "2"
-#define COW_MINESWEEPERCORE_VERSION_REVISION "0"
+#include "Block.h"
+#include "CoreMinesweeper_Utils.h"
+#include "GameCore.h"
 
-#define COW_MINESSWEEPERCORE_VERSION "0.2.0"
-
-#endif // defined(__MinesweeperCore_include_MinesweeperCore_Utils_h__) //
+#endif // defined(__CoreMinesweeper_include_CoreMinesweeper_h__) //
