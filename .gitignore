@@ -1,0 +1,3 @@
+#Ignore the binaries directories.
+bin/
+obj/
