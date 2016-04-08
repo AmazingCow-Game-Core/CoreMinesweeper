@@ -239,6 +239,7 @@ bool GameCore::isValidCoord(const CoreCoord::Coord &coord) const
 //Init.
 void GameCore::initRandomGenerator()
 {
+    //COWTODO: Start using the CoreRandom.
     if(m_seed == GameCore::kRandomSeed)
         m_seed = static_cast<int>(time(nullptr));
 
