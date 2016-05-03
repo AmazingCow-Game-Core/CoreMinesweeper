@@ -72,7 +72,7 @@ public:
     ///     Constructs the GameCore.
     ///@param boardWidth
     ///     The width of game Board - Must be > 0.
-    ///@param boardWidth
+    ///@param boardHeight
     ///     The height of game Board - Must be > 0.
     ///@param minesCount
     ///     How many mines will be placed in this Board -
