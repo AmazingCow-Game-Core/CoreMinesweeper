@@ -46,7 +46,8 @@
 //CoreMinesweeper.
 #include "CoreMinesweeper_Utils.h"
 //CoreCoord.
-#include "Coord.h"
+#include "CoreCoord.h"
+
 
 NS_COREMINESWEEPER_BEGIN
 
@@ -56,58 +57,68 @@ class Block
 public:
     friend class GameCore;
 
-    // Constants/Enums/Typedefs //
+    // Constants / Enums / Typedefs //
 public:
     ///@brief
+    ///     Meta-value indicating that this block is a mine.
+    ///@see isMine().
     const static int kMineNumber;
-    ///@brief
+
+    ///@brief Typedef just to reduce verbosity.
     typedef std::vector<std::vector<Block>> Board;
+
 
     // CTOR / DTOR //
 public:
-    ///@brief
+    ///@brief Default CTOR.
     Block();
-    ///@brief
+    ///@brief Default DTOR.
     ~Block();
 
     // Public Methods //
 public:
     ///@brief
-    ///@returns
+    ///     Gets the number of adjacent mines from this block. \n
+    ///     If the number is equal to kMineNumber this block represents a mine.
+    ///@returns The number of adjacent mines, or kMineNumber if it is mine.
+    ///@see isMine(), kMineNumber.
     int getNumber() const;
 
     ///@brief
-    ///@returns
+    ///     Gets the coord of this block in GameCore's Board.
+    ///@returns The coord for this block.
+    ///@see GameCore::getBlockAt(), GameCore::getBoard().
     const CoreCoord::Coord& getCoord() const;
 
 
     ///@brief
-    ///@returns
+    ///     Gets if this blocks represents a mine or not.
+    ///@returns True if it is a mine, false otherwise.
+    ///@see getNumber(), kMineNumber.
     bool isMine() const;
 
     ///@brief
-    ///@returns
+    ///     Gets if this block is flagged.
+    ///@returns True if it is flagged, false otherwise.
     bool isFlagged() const;
 
     ///@brief
-    ///@returns
+    ///     Gets if this block is flagged.
+    ///@returns True if it is flagged, false otherwise.
     bool isUncovered() const;
 
-
-    ///@brief
-    ///@returns
-    bool toggleFlag();
-
-    ///@brief
-    ///@returns
-    void uncover();
 
     // Private Methods //
 private:
     //This methods are meant to accessed by GameCore class.
     void setNumber(int number);
     void incrementNumber();
+
     void setCoord(const CoreCoord::Coord &coord);
+
+    bool toggleFlag();
+    void uncover();
+
 
     // iVars //
 private:
