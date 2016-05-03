@@ -49,8 +49,8 @@ const int Block::kMineNumber = -1;
 
 // CTOR / DTOR //
 Block::Block() :
-    m_number(0),
-    m_isFlagged(false),
+    m_number     (0),
+    m_isFlagged  (false),
     m_isUncovered(false)
     // m_coord - Default initialized.
 {
@@ -83,16 +83,6 @@ bool Block::isUncovered() const
     return m_isUncovered;
 }
 
-bool Block::toggleFlag()
-{
-    m_isFlagged = !m_isFlagged;
-    return m_isFlagged;
-}
-void Block::uncover()
-{
-    m_isUncovered = true;
-}
-
 // Private Methods //
 void Block::setNumber(int number)
 {
@@ -108,4 +98,14 @@ void Block::incrementNumber()
 void Block::setCoord(const CoreCoord::Coord &coord)
 {
     m_coord = coord;
+}
+
+bool Block::toggleFlag()
+{
+    m_isFlagged = !m_isFlagged;
+    return m_isFlagged;
+}
+void Block::uncover()
+{
+    m_isUncovered = true;
 }
