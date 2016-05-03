@@ -56,39 +56,62 @@ void usage()
 {
     cout << "Amazing Cow - CoreMinesweeper Test Game" << endl;
     cout << "Usage:" << endl;
-    cout << "  <binary-name> width height mines showMines" << endl;
-    cout << "Ex: ./testgame 4 8 10 1 //1 Show mines" << endl;
-    cout << "Ex: ./testgame 4 8 10 0 //0 DONT Show mines" << endl;
+    cout << "<binary-name> width height mines" << endl;
+    cout << "Ex: ./testgame    4      8    10" << endl;
+    cout << "Ex: ./testgame    4      8    10" << endl;
 
     exit(1);
 }
 
 int main(int argc, const char *argv[])
 {
-    if(argc != 5)
-        usage();
+   if(argc != 5)
+       usage();
 
     auto width     = atoi(argv[1]);
     auto height    = atoi(argv[2]);
     auto mines     = atoi(argv[3]);
     auto showMines = atoi(argv[4]);
 
-    GameCore core(width, height, mines);
+    GameCore core(width, height, mines, 1);
 
     while(core.getStatus() == GameCore::Status::Continue)
     {
-        cout << "Board" << endl;
-        if(showMines)
-            cout << core.asciiOpen() << endl;
-        else
-            cout << core.ascii() << endl;
+        //Print board info.
+        cout << "Board Open" << endl;
+        cout << core.ascii(showMines);
 
+        cout << "----------------" << endl;
+        cout << "Board Closed" << endl;
+        cout << core.ascii() << endl;
+
+        cout << "Flags Count: " << core.getFlagsCount() << endl;
+
+        //Get input mode.
+        char o;
+        cout << "[f]lag - [o]pen: ";
+        cin >> o;
+
+        //Get the coord.
+        cout << "Coord:";
         CoreCoord::Coord coord;
         cin >> coord.y >> coord.x;
 
-        // COWTODO: Implement the game.
-        core.openBlockAt(coord);
+        //Make move.
+        if(o == 'f')
+            core.toggleFlagAt(coord);
+        else
+            core.openBlockAt(coord);
+
+        cout << endl;
     }
+
+    //Game Over...
+    cout << "Game over with status: ";
+    cout << ((core.getStatus() == GameCore::Status::Victory)
+             ? "Victory"
+             : "Defeat")
+         << endl;
 }
 
 #endif // __AMAZINGCORE_COREMINESWEEPER_TEST_ENABLED__ //
