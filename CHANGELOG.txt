@@ -1,11 +1,102 @@
-v0.1.0 - ???
-v0.2.0 - ???
+--------------------------------------------------------------------------------
+| Version 0.4.x                                                                |
+--------------------------------------------------------------------------------
+v0.4.0 - [May 2, 2016]
+-- General --
+    - [BUGFIX] GameCore::toggleFlagAt
 
-v0.3.0 - [Nov 30 2015]
-    - Change the name of project from MinesweeperCore to CoreMinesweeper 
-      to follow the convention of AmazingCow Games.
+    - [API] Make some methods of Block class private.
+    - [API] GameCore asciiOpen is removed, and ascii now accepts
+            an argument to show open if desired.
+    - Improve documentation.
+    - New README.
+    - Add doxygen stuff.
+
+-- Source --
+    include/Block.h
+        - Add doxygen documentation.
+        - Make some methods private, since them are intent to be used
+          only by GameCore.
+        - Some cosmetic changes.
+
+    include/CoreMinesweeper_Utils.h
+        - Update version numbers.
+
+    include/GameCore.h
+        - Add the doxygen documentation.
+        - Some cosmetic changes.
+        - [API] Remove the asciiOpen method.
+        - [API] Make the ascii accept a argument.
 
 
+    src/Block.cpp
+        - Make some methods private, since them are intent to be used
+          only by GameCore.
+
+    src/GameCore.cpp
+        - [BUGFIX] toogleFlagAt
+          Wasn't adding the block to the flagged list.
+          Wasn't checking if block is already uncovered.
+        - Some cosmetic changes.
+        - Update the openBlockAt to better performance, since
+          if no blocks are opened there is no need to updated
+          the uncovered coords.
+        - Improve some comments.
+        - Add the std:: prefix on some stuff.
+        - [API] Remove the asciiOpen method.
+        - [API] Make the ascii accept a argument.
+
+    test_game/main.cpp
+        - Write the test game.
+
+    Makefile
+        - Some cosmetic changes.
+        - Change the compiler of obj target to g++.
+
+-- Info Files --
+    README.md
+        - Rewrite the README to consistency with other
+          Amazing Cow's READMEs.
+
+    CHANGELOG.txt
+        - Split the CHANGELOG entry in sections.
+        - Sort the CHANGELOG entries.
+          Now newer entries are on top.
+
+    mainpage.dox
+        - Add the mainpage doxygen documentation.
+
+-- Others --
+    Doxyfile
+        - Add the doxygen configuration.
+
+
+--------------------------------------------------------------------------------
+| Version 0.3.x                                                                |
+--------------------------------------------------------------------------------
 v0.3.1 - [Jan 20 2016]
     - Update the license headers.
     - Write the README.
+
+
+--------------------------------------------------------------------------------
+v0.3.0 - [Nov 30 2015]
+    - Change the name of project from MinesweeperCore to CoreMinesweeper
+      to follow the convention of AmazingCow Games.
+
+
+
+--------------------------------------------------------------------------------
+| Version 0.2.x                                                                |
+--------------------------------------------------------------------------------
+v0.2.0 - ???
+
+
+--------------------------------------------------------------------------------
+| Version 0.1.x                                                                |
+--------------------------------------------------------------------------------
+v0.1.0 - ???
+
+
+
+
