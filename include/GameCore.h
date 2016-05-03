@@ -205,7 +205,7 @@ public:
     ///@brief
     ///     Gets the nice representation of Board.
     ///     Intent for debug only :D
-    ///@parm showMines
+    ///@param showMines
     ///     If true, the mines will be visible.
     ///@returns The string representing the board.
     std::string ascii(bool showMines = false) const;
