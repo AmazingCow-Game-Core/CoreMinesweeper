@@ -41,21 +41,19 @@
 //Header
 #include "../include/GameCore.h"
 //std
-#include <ctime>
-#include <cstdlib>
-#include <sstream>
 #include <algorithm>
 #include <iterator>
+#include <sstream>
+#include <iostream>
 
 //Usings
 USING_NS_COREMINESWEEPER;
 
-// Enums/Constants/Typedefs //
-const int GameCore::kRandomSeed = -1;
 
 // CTOR/DTOR //
 GameCore::GameCore(int boardWidth, int boardHeight,
-                   int minesCount, int seed /* = kRandomSeed */) :
+                   int minesCount,
+                   int seed /* = CoreRandom::Random::kRandomSeed */) :
     //m_board                - Initialized in initBoard.
     //m_uncoveredBlockCoords - Default initialized.
     //m_flagCoords           - Default initialized.
@@ -63,9 +61,8 @@ GameCore::GameCore(int boardWidth, int boardHeight,
     m_minesCount (minesCount),
     m_boardWidth (boardWidth),
     m_boardHeight(boardHeight),
-    m_seed       (seed)
+    m_random     (seed)
 {
-    initRandomGenerator();
     initBoard();
 }
 
@@ -73,19 +70,26 @@ GameCore::GameCore(int boardWidth, int boardHeight,
 //Flag.
 const Block& GameCore::toggleFlagAt(const CoreCoord::Coord &coord)
 {
-    auto &block  = getBlockAt(coord);
+    auto &block = getBlockAt(coord);
+
+    //Block is already uncovered,
+    //cannot toggle flags on it.
+    if(block.isUncovered())
+        return block;
+
     auto flagged = block.toggleFlag();
 
-    //If block is now flagged add it to flagged coords.
-    //If block is NOT flagged remove it from flagged coords.
     auto it = std::find(std::begin(m_flagCoords),
                         std::end  (m_flagCoords),
                         coord);
 
-    if(flagged && it != end(m_flagCoords))
-        m_flagCoords.erase(it);
-    else if(!flagged && it == end(m_flagCoords))
+    //If block is now flagged add it to flagged coords.
+    if(flagged && it == end(m_flagCoords))
         m_flagCoords.push_back(coord);
+
+    //If block is NOT flagged remove it from flagged coords.
+    else if(!flagged && it != end(m_flagCoords))
+        m_flagCoords.erase(it);
 
     return block;
 }
@@ -98,31 +102,32 @@ int GameCore::getFlagsCount() const
     return static_cast<int>(m_flagCoords.size());
 }
 
+
 //Blocks.
 CoreCoord::Coord::Vec GameCore::openBlockAt(const CoreCoord::Coord &coord)
 {
     auto openedCoords = CoreCoord::Coord::Vec();
 
     //Coord is not on the board bounds or
-    //the game is already over - we don't have to anything more...
+    //the game is already over - we don't have to do anything more...
     if(!isValidCoord(coord) || m_status != Status::Continue)
         return openedCoords;
 
     //Open all possible blocks.
     openedCoords = openBlockHelper(coord);
 
-    //Update the uncovered coords.
-    m_uncoveredBlockCoords.insert(end  (m_uncoveredBlockCoords),
-                                  begin(openedCoords),
-                                  end  (openedCoords));
-
     //No blocks was opened.
     if(openedCoords.empty())
         return openedCoords;
 
+    //Update the uncovered coords.
+    m_uncoveredBlockCoords.insert(std::end  (m_uncoveredBlockCoords),
+                                  std::begin(openedCoords),
+                                  std::end  (openedCoords));
 
     //Check status.
-    const auto &block  = getBlockAt(openedCoords[0]);
+    const auto &block = getBlockAt(openedCoords[0]);
+
     //Player hit a mine - Game is Over.
     if(block.isMine())
     {
@@ -133,7 +138,6 @@ CoreCoord::Coord::Vec GameCore::openBlockAt(const CoreCoord::Coord &coord)
     {
         m_status = Status::Victory;
     }
-
 
     return openedCoords;
 }
@@ -168,13 +172,12 @@ int GameCore::getMinesCount() const
 }
 int GameCore::getSeed() const
 {
-    return m_seed;
+    return m_random.getSeed();
 }
 
 //Ascii.
-std::string GameCore::ascii() const
+std::string GameCore::ascii(bool showMines /* true */) const
 {
-    //COWTODO: Fix.
     std::stringstream ss;
 
     for(const auto &line : m_board)
@@ -183,49 +186,31 @@ std::string GameCore::ascii() const
         {
             if(block.isUncovered())
             {
-                if(block.getNumber() == 0)
-                    ss << ".";
-                else
-                    ss << block.getNumber();
+                ss << ((block.getNumber() == 0)
+                       ? '.'
+                       : (char)('0' + block.getNumber()));
             }
             else if(block.isFlagged())
+            {
                 ss << "F";
-            else if(block.isMine())
+            }
+            else if(showMines && block.isMine())
+            {
                 ss << "*";
+            }
             else
+            {
                 ss << "x";
-        }
-        ss << std::endl;
-    }
-    return ss.str();
-}
-std::string GameCore::asciiOpen() const
-{
-    //COWTODO: Fix.
-    std::stringstream ss;
-
-    for(const auto &line : m_board)
-    {
-        for(const auto &block : line)
-        {
-            if(block.isUncovered())
-            {
-                if(block.getNumber() == 0)
-                    ss << ".";
-                else
-                    ss << block.getNumber();
             }
-            else if(block.isFlagged())
-                ss << "F";
-            else if(block.isMine())
-                ss << "*";
-            else
-                ss << block.getNumber();
+
+
+
         }
         ss << std::endl;
     }
     return ss.str();
 }
+
 
 //Helper.
 bool GameCore::isValidCoord(const CoreCoord::Coord &coord) const
@@ -237,14 +222,6 @@ bool GameCore::isValidCoord(const CoreCoord::Coord &coord) const
 
 // Private Methods //
 //Init.
-void GameCore::initRandomGenerator()
-{
-    //COWTODO: Start using the CoreRandom.
-    if(m_seed == GameCore::kRandomSeed)
-        m_seed = static_cast<int>(time(nullptr));
-
-    srand(m_seed);
-}
 void GameCore::initBoard()
 {
     //Play nice with memory...
@@ -272,8 +249,9 @@ void GameCore::initBoard()
         //Continue while a valid Mine position is found.
         while(true)
         {
-            int y = rand() % m_boardHeight;
-            int x = rand() % m_boardWidth;
+            //CoreRandom::Random::Next are upperbounds are inclusive.
+            int y = m_random.next(m_boardHeight -1);
+            int x = m_random.next(m_boardWidth  -1);
 
             auto &block = m_board[y][x];
 
@@ -324,7 +302,7 @@ CoreCoord::Coord::Vec GameCore::openBlockHelper(const CoreCoord::Coord &coord)
     block.uncover();
     openedCoords.push_back(coord);
 
-    //Uncovered a non zero block, so just open it and return.
+    //Uncovered a non zero block or a mine -  so just open it and return.
     if(block.getNumber() == Block::kMineNumber ||
        block.getNumber() != 0)
     {
@@ -339,9 +317,9 @@ CoreCoord::Coord::Vec GameCore::openBlockHelper(const CoreCoord::Coord &coord)
             continue;
 
         auto surroundOpened = openBlockHelper(surroundCoord);
-        openedCoords.insert(end  (openedCoords),
-                            begin(surroundOpened),
-                            end  (surroundOpened));
+        openedCoords.insert(std::end  (openedCoords),
+                            std::begin(surroundOpened),
+                            std::end  (surroundOpened));
     }
 
     return openedCoords;
