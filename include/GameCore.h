@@ -43,26 +43,21 @@
 
 //std
 #include <vector>
-#include <random>
 //CoreMinesweeper.
-#include "CoreMinesweeper_Utils.h"
 #include "Block.h"
+#include "CoreMinesweeper_Utils.h"
 //CoreCoord.
-#include "Coord.h"
+#include "CoreCoord.h"
+//CoreRandom
+#include "CoreRandom.h"
+
 
 NS_COREMINESWEEPER_BEGIN
 
 class GameCore
 {
-    // Enums/Constants/Typedefs //
+    // Enums / Constants / Typedefs //
 public:
-    ///@brief When GameCore is constructed using the kRandomSeed, it will
-    ///generate an actual seed based in random factors. This is a meta seed
-    ///only to indicating the a random seed must be generated.
-    ///@see getSeed.
-    static const int kRandomSeed;
-
-    ///@brief Defines the possible states for GameCore.
     enum class Status
     {
         Victory,  ///< Game is over     - Player Won.
@@ -74,88 +69,166 @@ public:
     // CTOR/DTOR //
 public:
     ///@brief
+    ///     Constructs the GameCore.
+    ///@param boardWidth
+    ///     The width of game Board - Must be > 0.
+    ///@param boardWidth
+    ///     The height of game Board - Must be > 0.
+    ///@param minesCount
+    ///     How many mines will be placed in this Board -
+    ///     Must be <= (boardWith * boardHeight)
+    ///@param seed
+    ///     The seed used to generate the random numbers. -
+    ///     Default is CoreRandom::Random::kRandomSeed.
+    ///@note
+    ///     The CTOR will not validate the given arguments.
+    ///     Is user's responsibility to pass valid values.
+    ///@warning
+    ///     If invalid values are given the behavior is unpredictable.
     GameCore(int boardWidth, int boardHeight,
-             int minesCount, int seed = kRandomSeed);
+             int minesCount,
+             int seed = CoreRandom::Random::kRandomSeed);
 
 
     // Public Methods //
 public:
     //Flag.
     ///@brief
+    ///     Toggle a flag for block at given coord. \n
+    ///     A flag only will be toggled if the block
+    ///     isn't already uncovered.
+    ///@param coord
+    ///     The block coord - It must be valid in game Board.
     ///@returns
+    ///     The affected block
+    ///@warning
+    //      This method will not check the validity of coord.
+    ///     Users must pass a valid coord, or behavior is undefined.
+    ///@see
+    ///     Block::isUncovered(), Block::isFlagged(),
+    ///     getFlagCoords(), getFlagsCount(), isValidCoord(),
+    ///     openBlockAt().
     const Block& toggleFlagAt(const CoreCoord::Coord &coord);
 
     ///@brief
-    ///@returns
+    ///     Gets all coords of Blocks that are flagged.
+    ///@returns A vector of coords of Flagged blocks.
+    ///@see Block::isFlagged(), toggleFlagAt(), getFlagsCount().
     const CoreCoord::Coord::Vec& getFlagCoords() const;
 
     ///@brief
-    ///@returns
+    ///     Gets how many blocks are flagged.
+    ///@returns How many blocks are flagged.
+    ///@see Block::isFlagged(), toggleFlagAt(), getFlagsCoords().
     int getFlagsCount() const;
 
 
     //Blocks.
     ///@brief
+    ///     Open a block at given coord. \n
+    ///     The block will be opened only if it
+    ///     isn't flagged nor already opened. \n
+    ///     Opening a block can trigger one, or more blocks
+    ///     to being opened too. This happens when them haven't
+    ///     mines or flagged blocks in surrounding coords. \n
+    ///     The Game Status can change at this method, so users
+    ///     should call getStatus() to check if game was win, or lose.
+    ///@param coord
+    ///     The coord of block that will be opened. -
+    ///     While this method will check the validity of the coord,
+    ///     invalid coords will receive empty vectors in response.
     ///@returns
+    ///     All the affected coords. The coords that player choose and passed
+    ///     as argument to this method will be returned at index 0, if it
+    ///     could be opened, all other coords that was opened in the reaction
+    ///     isn't in a particular order.
+    ///@note
+    ///     While isn't strict needed to pass valid coords to this method
+    ///     it will return nothing but a empty vector if the coord isn't valid.
+    ///@see
+    ///     Block, Block::isUncovered(), Block::isFlagged(),
+    ///      isValidCoord(), toggleFlagAt(), getStatus().
     CoreCoord::Coord::Vec openBlockAt(const CoreCoord::Coord &coord);
 
-    ///@brief
-    ///@returns
+    ///@brief Gets the block at coord.
+    ///@param coord
+    ///     The coord of block - This MUST be valid in Board bounds.
+    ///@warning This method will not check the coord validity.
+    ///@returns The block.
+    ///@see isValidCoord(), Block.
     const Block& getBlockAt(const CoreCoord::Coord &coord) const;
 
     ///@brief
-    ///@returns
+    ///     Gets all coords of Blocks that are uncovered.
+    ///@returns A vector of coords of Uncovered blocks.
+    ///@see Block::isUncovered(), openBlockAt(), getUncoveredBlocksCount().
     const CoreCoord::Coord::Vec& getUncoveredBlockCoords() const;
 
     ///@brief
-    ///@returns
+    ///     Gets how many blocks are uncovered.
+    ///@returns How many blocks are uncovered.
+    ///@see Block::isUncovered(), openBlockAt(), getUncoveredBlocksCoords().
     int getUncoveredBlocksCount() const;
 
 
     //Board.
     ///@brief
-    ///@returns
+    ///     Gets the whole Board.
+    ///     Intent to ease the Game Board inspection, so instead of
+    ///     doing a loop of getBlockAt() you can get all blocks in one shot.
+    ///@returns The Board.
     const Block::Board& getBoard() const;
 
 
     //Game stuff.
     ///@brief
-    ///@returns
+    ///     Get the current status of game.
+    ///     Should be called after each openBlockAt() to
+    ///     check if game is won, or lose.
+    ///@returns The game status.
+    ///@see openBlockAt().
     Status getStatus() const;
 
-    ///@brief
-    ///@returns
+    ///@brief How many mines were placed in this game.
+    ///@returns The number of mines.
     int getMinesCount() const;
 
     ///@brief
-    ///@returns
+    ///     The actual seed used by CoreRandom::Random
+    ///     to generate the game.
+    ///@returns The seed used.
+    ///@see CoreRandom::Random.
     int getSeed() const;
 
 
     //Ascii.
     ///@brief
-    ///@returns
-    std::string ascii() const;
-
-    ///@brief
-    ///@returns
-    std::string asciiOpen() const;
+    ///     Gets the nice representation of Board.
+    ///     Intent for debug only :D
+    ///@parm showMines
+    ///     If true, the mines will be visible.
+    ///@returns The string representing the board.
+    std::string ascii(bool showMines = false) const;
 
 
     //Helpers.
     ///@brief
-    ///@returns
+    ///     Checks if the given coord is in Board bounds.
+    ///     Users should use this method to validate the coords,
+    ///     before passing it to the other GameCore methods.
+    ///@returns True if coord is valid, false otherwise.
     bool isValidCoord(const CoreCoord::Coord &coord) const;
+
 
     // Private Methods //
 private:
     //Init.
-    void initRandomGenerator();
     void initBoard();
 
     //Helpers.
     Block& getBlockAt(const CoreCoord::Coord &coord);
     CoreCoord::Coord::Vec openBlockHelper(const CoreCoord::Coord &coord);
+
 
     // iVars //
 private:
@@ -167,8 +240,10 @@ private:
     int    m_minesCount;
     int    m_boardWidth;
     int    m_boardHeight;
-    int    m_seed;
+
+    CoreRandom::Random m_random;
 };
+
 
 NS_COREMINESWEEPER_END
 #endif // defined(__CoreMinesweeper_include_GameCore_h__) //
