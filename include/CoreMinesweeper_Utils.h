@@ -51,9 +51,9 @@
 
 //The core version number.
 #define COW_COREMINESWEEPER_VERSION_MAJOR    "0"
-#define COW_COREMINESWEEPER_VERSION_MINOR    "3"
-#define COW_COREMINESWEEPER_VERSION_REVISION "1"
+#define COW_COREMINESWEEPER_VERSION_MINOR    "4"
+#define COW_COREMINESWEEPER_VERSION_REVISION "0"
 
-#define COW_MINESSWEEPERCORE_VERSION "0.3.1"
+#define COW_MINESSWEEPERCORE_VERSION "0.4.0"
 
 #endif // defined(__CoreMinesweeper_include_CoreMinesweeper_Utils_h__) //
