@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------//
+﻿//----------------------------------------------------------------------------//
 //               █      █                                                     //
 //               ████████                                                     //
 //             ██        ██                                                   //
@@ -226,7 +226,7 @@ private:
     void initBoard();
 
     //Helpers.
-    Block& getBlockAt(const CoreCoord::Coord &coord);
+    Block& getBlockAtHelper(const CoreCoord::Coord &coord);
     CoreCoord::Coord::Vec openBlockHelper(const CoreCoord::Coord &coord);
 
 

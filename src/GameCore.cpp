@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------//
+﻿//----------------------------------------------------------------------------//
 //               █      █                                                     //
 //               ████████                                                     //
 //             ██        ██                                                   //
@@ -70,7 +70,7 @@ GameCore::GameCore(int boardWidth, int boardHeight,
 //Flag.
 const Block& GameCore::toggleFlagAt(const CoreCoord::Coord &coord)
 {
-    auto &block = getBlockAt(coord);
+    auto &block = getBlockAtHelper(coord);
 
     //Block is already uncovered,
     //cannot toggle flags on it.
@@ -176,7 +176,7 @@ int GameCore::getSeed() const
 }
 
 //Ascii.
-std::string GameCore::ascii(bool showMines /* true */) const
+std::string GameCore::ascii(bool showMines /* false */) const
 {
     std::stringstream ss;
 
@@ -268,7 +268,7 @@ void GameCore::initBoard()
                 if(!isValidCoord(coord))
                     continue;
 
-                auto &surroundBlock = getBlockAt(coord);
+                auto &surroundBlock = getBlockAtHelper(coord);
                 surroundBlock.incrementNumber();
             }
 
@@ -279,10 +279,11 @@ void GameCore::initBoard()
 }
 
 //Helpers.
-Block& GameCore::getBlockAt(const CoreCoord::Coord &coord)
+Block& GameCore::getBlockAtHelper(const CoreCoord::Coord &coord)
 {
     return m_board[coord.y][coord.x];
 }
+
 CoreCoord::Coord::Vec GameCore::openBlockHelper(const CoreCoord::Coord &coord)
 {
     CoreCoord::Coord::Vec openedCoords;
@@ -291,7 +292,7 @@ CoreCoord::Coord::Vec GameCore::openBlockHelper(const CoreCoord::Coord &coord)
     if(!isValidCoord(coord))
         return openedCoords;
 
-    auto &block = getBlockAt(coord);
+    auto &block = getBlockAtHelper(coord);
 
     //Block is already uncovered or is flagged.
     //So we don't have nothing more to do.

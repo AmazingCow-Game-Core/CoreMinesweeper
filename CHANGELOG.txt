@@ -1,6 +1,14 @@
 --------------------------------------------------------------------------------
 | Version 0.4.x                                                                |
 --------------------------------------------------------------------------------
+v0.4.2 - [Sep 12, 2016]
+-- General --
+    - Change the name of non const GameCore::getBlockAt method to
+      GameCore::getBlockAtHelper to avoid unneeded const_casts since
+      if the users are using non const GameCore objects the compiler
+      will resolve to the private method.
+
+--------------------------------------------------------------------------------
 v0.4.1 - [Jul 15, 2016]
 -- General --
     - Update the mainpage.dox and README.md to
